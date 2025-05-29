@@ -28,15 +28,11 @@ namespace Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser
             var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
             
             if (user == null || !_passwordHasher.VerifyPassword(request.Password, user.Password))
-            {
                 throw new UnauthorizedAccessException("Invalid credentials");
-            }
 
             var activeUserSpec = new ActiveUserSpecification();
             if (!activeUserSpec.IsSatisfiedBy(user))
-            {
                 throw new UnauthorizedAccessException("User is not active");
-            }
 
             var token = _jwtTokenGenerator.GenerateToken(user);
 
