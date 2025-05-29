@@ -36,8 +36,7 @@ public class GetProductsHandler : IRequestHandler<GetProductsQuery, PageList<Get
    public async Task<PageList<GetProductsResult>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
    {
       var products = await _productRepository.ListAsync(request);
-      if (products is null)
-         throw new KeyNotFoundException($"Products not found");
+      if (products is null) throw new KeyNotFoundException($"Products not found");
 
       return _mapper.Map<PageList<GetProductsResult>>(products);
    }

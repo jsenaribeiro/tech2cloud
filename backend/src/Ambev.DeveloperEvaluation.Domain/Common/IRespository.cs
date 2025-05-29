@@ -9,7 +9,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Common;
 /// </summary>
 /// <typeparam name="E">The entity type</typeparam>
 /// <typeparam name="I">The identity type</typeparam>
-public interface IRepository<E, I> where E : BaseEntity where I : struct
+public interface IRepository<E, I> where E : BaseEntity<I> where I : struct, IComparable
 {
    /// <summary>
    /// Creates a new entity in the repository

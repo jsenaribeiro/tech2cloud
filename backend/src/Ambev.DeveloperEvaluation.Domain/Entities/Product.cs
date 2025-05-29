@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 /// <summary>
 /// Request model for getting a user by ID
 /// </summary>
-public class Product : BaseEntity
+public class Product : BaseEntity<int>
 {
    /// <summary>
    /// Title or name of the product.

@@ -11,11 +11,13 @@ using System.Linq.Expressions;
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 
 /// <summary>
-/// Abstract Repository for basic CRUD operations
+/// Base Repository for basic CRUD operations
 /// </summary>
-public abstract class AbstractRepository<E, I> : IRepository<E, I> where E : BaseEntity where I : struct
+public abstract class BaseRepository<E, I> : IRepository<E, I>
+    where E : BaseEntity<I>
+    where I : struct, IComparable
 {
-   protected readonly PostgreContext context;
+   protected readonly DefaultContext context;
 
    protected readonly DbSet<E> dbSet;
 
@@ -23,9 +25,9 @@ public abstract class AbstractRepository<E, I> : IRepository<E, I> where E : Bas
    /// Initializes a new instance of UserRepository
    /// </summary>
    /// <param name="context">The database context</param>
-   public AbstractRepository(IServiceProvider provider)
+   public BaseRepository(IServiceProvider provider)
    {
-      this.context = provider.GetRequiredService<PostgreContext>();
+      this.context = provider.GetRequiredService<DefaultContext>();
       this.dbSet = context.Set<E>();
    }
 

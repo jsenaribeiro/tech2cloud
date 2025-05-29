@@ -9,7 +9,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 /// <summary>
 /// Implementation of IProductRepository using Entity Framework Core
 /// </summary>
-public class ProductRepository : AbstractRepository<Product, Guid>, IProductRepository
+public class ProductRepository : BaseRepository<Product, int>, IProductRepository
 {
    /// <summary>
    /// Initializes a new instance of ProductRepository

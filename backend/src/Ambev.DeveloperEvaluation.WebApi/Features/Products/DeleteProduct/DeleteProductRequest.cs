@@ -8,13 +8,13 @@ public class DeleteProductRequest
     /// <summary>
     /// The unique identifier of the product to delete
     /// </summary>
-    public Guid Id { get; }
+    public int Id { get; }
 
     /// <summary>
     /// Initializes a new instance of DeleteProductCommand
     /// </summary>
     /// <param name="id">The ID of the product to delete</param>
-    public DeleteProductRequest(Guid id)
+    public DeleteProductRequest(int id)
     {
         Id = id;
     }

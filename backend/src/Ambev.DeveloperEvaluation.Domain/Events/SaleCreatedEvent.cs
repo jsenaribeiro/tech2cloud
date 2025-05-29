@@ -1,7 +1,7 @@
 public record SaleCreatedEvent(
-    Guid SaleId,
+    int SaleId,
+    int BranchId,
+    int CustomerId,
     DateTime SaleDate,
-    Guid CustomerId,
-    Guid BranchId,
     decimal TotalAmount
 );

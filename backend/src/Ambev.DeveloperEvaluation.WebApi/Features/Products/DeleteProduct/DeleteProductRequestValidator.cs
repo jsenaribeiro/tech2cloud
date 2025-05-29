@@ -5,12 +5,12 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
 /// <summary>
 /// Validator for DeleteProductRequest
 /// </summary>
-public class DeleteProductValidator : AbstractValidator<DeleteProductRequest>
+public class DeleteProductRequestValidator : AbstractValidator<DeleteProductRequest>
 {
     /// <summary>
     /// Initializes validation rules for DeleteProductRequest
     /// </summary>
-    public DeleteProductValidator()
+    public DeleteProductRequestValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()

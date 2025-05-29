@@ -11,11 +11,13 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.UpdateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
-using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProductCategories;
 using Ambev.DeveloperEvaluation.Application.Products.GetProductCategories;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProductsByCategory;
 using Ambev.DeveloperEvaluation.Application.Products.GetProductsByCategory;
 using Ambev.DeveloperEvaluation.Domain.Values;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.DeleteProduct;
+using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
+using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProductCategories;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products;
 
@@ -50,7 +52,7 @@ public class ProductsController : BaseController
    [ProducesResponseType(typeof(ApiResponseWithData<GetProductResponse>), StatusCodes.Status200OK)]
    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-   public async Task<IActionResult> GetProduct([FromRoute] Guid id, CancellationToken cancellationToken)
+   public async Task<IActionResult> GetProduct([FromRoute] int id, CancellationToken cancellationToken)
    {
       var request = new GetProductRequest(id);
       var validator = new GetProductRequestValidator();
@@ -83,55 +85,6 @@ public class ProductsController : BaseController
       var response = _mapper.Map<PageList<GetProductsResponse>>(result);
 
       return OkPaginated(response);
-   }
-
-   /// <summary>
-   /// Creates a new product
-   /// </summary>
-   /// <param name="request">The product creation request</param>
-   /// <param name="cancellationToken">Cancellation token</param>
-   /// <returns>The created product details</returns>
-   [HttpPost]
-   [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
-   [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-   public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
-   {
-      var validator = new CreateProductRequestValidator();
-      var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-      if (!validationResult.IsValid)
-         return BadRequest(validationResult.Errors);
-
-      var command = _mapper.Map<CreateProductCommand>(request);
-      var response = await _mediator.Send(command, cancellationToken);
-
-      return Created(string.Empty, _mapper.Map<CreateProductResponse>(response));
-   }
-
-   /// <summary>
-   /// Updates a product
-   /// </summary>
-   /// <param name="id">The unique identifier of the product</param>
-   /// <param name="request">The product update request</param>
-   /// <param name="cancellationToken">Cancellation token</param>
-   /// <returns>The updated product details</returns>
-   [HttpPut("{id}")]
-   [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
-   [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-   public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
-   {
-      var validator = new UpdateProductRequestValidator();
-      var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-      if (!validationResult.IsValid)
-         return BadRequest(validationResult.Errors);
-
-      var command = _mapper.Map<UpdateProductCommand>(request);
-      command.Id = id;
-      
-      var response = await _mediator.Send(command, cancellationToken);
-
-      return Ok(_mapper.Map<UpdateProductResponse>(response));
    }
 
    /// <summary>
@@ -170,5 +123,83 @@ public class ProductsController : BaseController
       var response = _mapper.Map<PageList<GetProductsByCategoryResponse>>(result);
 
       return OkPaginated(response);
+   }
+
+   /// <summary>
+   /// Creates a new product
+   /// </summary>
+   /// <param name="request">The product creation request</param>
+   /// <param name="cancellationToken">Cancellation token</param>
+   /// <returns>The created product details</returns>
+   [HttpPost]
+   [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
+   [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+   public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
+   {
+      var validator = new CreateProductRequestValidator();
+      var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+      if (!validationResult.IsValid)
+         return BadRequest(validationResult.Errors);
+
+      var command = _mapper.Map<CreateProductCommand>(request);
+      var response = await _mediator.Send(command, cancellationToken);
+
+      return Created(string.Empty, _mapper.Map<CreateProductResponse>(response));
+   }
+
+   /// <summary>
+   /// Updates a product
+   /// </summary>
+   /// <param name="id">The unique identifier of the product</param>
+   /// <param name="request">The product update request</param>
+   /// <param name="cancellationToken">Cancellation token</param>
+   /// <returns>The updated product details</returns>
+   [HttpPut("{id}")]
+   [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
+   [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+   public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
+   {
+      var validator = new UpdateProductRequestValidator();
+      var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+      if (!validationResult.IsValid)
+         return BadRequest(validationResult.Errors);
+
+      var command = _mapper.Map<UpdateProductCommand>(request);
+      command.Id = id;
+      
+      var response = await _mediator.Send(command, cancellationToken);
+
+      return Ok(_mapper.Map<UpdateProductResponse>(response));
+   }
+
+   /// <summary>
+   /// Deletes a user by their ID
+   /// </summary>
+   /// <param name="id">The unique identifier of the user to delete</param>
+   /// <param name="cancellationToken">Cancellation token</param>
+   /// <returns>Success response if the user was deleted</returns>
+   [HttpDelete("{id}")]
+   [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+   [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+   [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+   public async Task<IActionResult> DeleteUser([FromRoute] int id, CancellationToken cancellationToken)
+   {
+      var request = new DeleteProductRequest(id);
+      var validator = new DeleteProductRequestValidator();
+      var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+      if (!validationResult.IsValid)
+         return BadRequest(validationResult.Errors);
+
+      var command = _mapper.Map<DeleteProductCommand>(request.Id);
+      await _mediator.Send(command, cancellationToken);
+
+      return Ok(new ApiResponse
+      {
+         Success = true,
+         Message = "Product deleted successfully"
+      });
    }
 }

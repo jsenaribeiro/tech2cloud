@@ -2,9 +2,12 @@
 
 namespace Ambev.DeveloperEvaluation.Domain.Common;
 
-public abstract class BaseEntity : IComparable<BaseEntity>
+public abstract class BaseEntity<I> : IComparable<BaseEntity<I>> where I : struct, IComparable
 {
-    public Guid Id { get; set; }
+   /// <summary>
+   /// The unique identifier of the entity
+   /// </summary>
+   public I Id { get; set; }
 
    /// <summary>
    /// Gets the date and time creation.
@@ -16,18 +19,12 @@ public abstract class BaseEntity : IComparable<BaseEntity>
    /// </summary>
    public DateTime? UpdatedAt { get; set; }
 
-   public Task<IEnumerable<ValidationErrorDetail>> ValidateAsync()
+   public Task<IEnumerable<ValidationErrorDetail>> ValidateAsync() =>
+       Validator.ValidateAsync(this);
+
+   public int CompareTo(BaseEntity<I>? other)
    {
-      return Validator.ValidateAsync(this);
+      if (other == null) return 1;
+      return Id.CompareTo(other.Id);
    }
-
-    public int CompareTo(BaseEntity? other)
-    {
-        if (other == null)
-        {
-            return 1;
-        }
-
-        return other!.Id.CompareTo(Id);
-    }
 }

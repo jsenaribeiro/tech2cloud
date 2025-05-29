@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
-    [DbContext(typeof(PostgreContext))]
+    [DbContext(typeof(DefaultContext))]
     [Migration("20241014011203_InitialMigrations")]
     partial class InitialMigrations
     {

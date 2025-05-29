@@ -14,7 +14,8 @@
 * service locator pattern for DI (better testing)
 * BastEntity marked as abstract
 * missing mapper between GetUserResult -> GetUserResponse
-* PaginatedList -> PageList -> DDD -> {  data: }  // AutoMapper not works with :List<T>
+* PaginatedList -> PageList -> DDD -> {  data: }  // AutoMapper not works with :List
+* PageList (remove EfCore dependency to keep a isolated domain )
 
 ## Suggestions
 
@@ -25,3 +26,13 @@
 ## Questions
 
 * why double validator (GetUserRequestValidator + GetUserValidator)
+
+
+
+### Current
+
+* change Id to integer
+
+* fix delete API messages to string
+
+* add Cart CRUD

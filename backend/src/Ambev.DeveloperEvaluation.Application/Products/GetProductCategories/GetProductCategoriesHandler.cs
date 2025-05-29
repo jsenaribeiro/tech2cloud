@@ -29,8 +29,7 @@ public class GetProductCategoriesHandler : IRequestHandler<GetProductCategoriesQ
    public async Task<string[]> Handle(GetProductCategoriesQuery request, CancellationToken cancellationToken)
    {
       var categories = await _productRepository.ListAllCategoriesAsync();
-      if (categories is null)
-         throw new KeyNotFoundException($"Categories not found");
+      if (categories is null) throw new KeyNotFoundException($"Categories not found");
 
       return categories.ToArray();
    }

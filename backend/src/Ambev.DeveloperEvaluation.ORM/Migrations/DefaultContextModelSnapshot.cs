@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
-    [DbContext(typeof(PostgreContext))]
+    [DbContext(typeof(DefaultContext))]
     partial class DefaultContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -22,12 +22,38 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carts", (string)null);
+                });
+
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -56,15 +82,16 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -107,13 +134,44 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Cart", b =>
+                {
+                    b.OwnsMany("Ambev.DeveloperEvaluation.Domain.Values.CartProduct", "Products", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<int>("CartId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("ProductId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("Quantity")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("CartId");
+
+                            b1.ToTable("CartProduct");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CartId");
+                        });
+
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
                 {
                     b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Values.Rating", "Rating", b1 =>
                         {
-                            b1.Property<Guid>("ProductId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("uuid");
+                            b1.Property<int>("ProductId")
+                                .HasColumnType("integer");
 
                             b1.Property<int>("Count")
                                 .HasColumnType("integer")

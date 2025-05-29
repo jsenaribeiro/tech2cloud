@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories;
 /// <summary>
 /// Repository interface for product entity operations
 /// </summary>
-public interface IProductRepository : IRepository<Product, Guid>
+public interface IProductRepository : IRepository<Product, int>
 {
    Task<string[]> ListAllCategoriesAsync();
 

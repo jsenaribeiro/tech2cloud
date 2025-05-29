@@ -5,14 +5,11 @@ using System.Text.RegularExpressions;
 
 namespace Ambev.DeveloperEvaluation.ORM.Mapping;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : BaseConfiguration<User, int>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public override void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("Users");
-
-        builder.HasKey(u => u.Id);
-        builder.Property(u => u.Id).HasColumnType("uuid").HasDefaultValueSql("gen_random_uuid()");
+        base.Configure(builder);
 
         builder.Property(u => u.Username).IsRequired().HasMaxLength(50);
         builder.Property(u => u.Password).IsRequired().HasMaxLength(100);
@@ -26,6 +23,5 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Role)
             .HasConversion<string>()
             .HasMaxLength(20);
-
     }
 }

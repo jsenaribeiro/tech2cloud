@@ -11,7 +11,7 @@ public class UpdateProductCommand : IRequest<UpdateProductResult>
    /// <summary>
    /// The unique identifier of the product to retrieve
    /// </summary>
-   public Guid Id { get; set; }
+   public int Id { get; set; }
    
    /// <summary>
    /// Title or name of the product.

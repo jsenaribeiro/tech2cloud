@@ -10,7 +10,7 @@ public class UpdateProductResponse
    /// <summary>
    /// Unique identifier of the newly updated product.
    /// </summary>
-   public Guid Id { get; set; }
+   public int Id { get; set; }
 
    /// <summary>
    /// Title or name of the product.

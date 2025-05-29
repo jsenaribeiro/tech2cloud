@@ -10,7 +10,7 @@ public class CreateProductResult
    /// <summary>
    /// Unique identifier of the newly created product.
    /// </summary>
-   public Guid Id { get; set; }
+   public int Id { get; set; }
 
    /// <summary>
    /// Title or name of the product.

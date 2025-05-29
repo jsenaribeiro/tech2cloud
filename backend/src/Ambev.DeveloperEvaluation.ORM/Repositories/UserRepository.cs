@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 /// <summary>
 /// Implementation of IUserRepository using Entity Framework Core
 /// </summary>
-public class UserRepository : AbstractRepository<User, Guid>, IUserRepository
+public class UserRepository : BaseRepository<User, int>, IUserRepository
 {
     /// <summary>
     /// Initializes a new instance of UserRepository

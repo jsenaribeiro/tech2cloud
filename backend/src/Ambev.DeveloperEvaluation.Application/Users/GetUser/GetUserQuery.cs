@@ -10,13 +10,13 @@ public record GetUserQuery : IRequest<GetUserResult>
     /// <summary>
     /// The unique identifier of the user to retrieve
     /// </summary>
-    public Guid Id { get; }
+    public int Id { get; }
 
     /// <summary>
     /// Initializes a new instance of GetUserQuery
     /// </summary>
     /// <param name="id">The ID of the user to retrieve</param>
-    public GetUserQuery(Guid id)
+    public GetUserQuery(int id)
     {
         Id = id;
     }

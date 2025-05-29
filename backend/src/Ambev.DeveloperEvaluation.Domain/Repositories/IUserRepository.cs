@@ -7,7 +7,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories;
 /// <summary>
 /// Repository interface for User entity operations
 /// </summary>
-public interface IUserRepository : IRepository<User, Guid>
+public interface IUserRepository : IRepository<User, int>
 {
    /// <summary>
    /// Retrieves a entity by their email address

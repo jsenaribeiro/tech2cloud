@@ -6,15 +6,17 @@ using System.Reflection;
 
 namespace Ambev.DeveloperEvaluation.ORM;
 
-using ContextOptions = DbContextOptions<PostgreContext>;
+using ContextOptions = DbContextOptions<DefaultContext>;
 
-public class PostgreContext : DbContext
+public class DefaultContext : DbContext
 {
    public DbSet<User> Users { get; set; }
 
+   public DbSet<Cart> Carts { get; set; }
+
    public DbSet<Product> Products { get; set; }
 
-   public PostgreContext(ContextOptions options) : base(options) { }
+   public DefaultContext(ContextOptions options) : base(options) { }
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {
@@ -23,16 +25,16 @@ public class PostgreContext : DbContext
       base.OnModelCreating(modelBuilder);
    }
 }
-public class YourDbContextFactory : IDesignTimeDbContextFactory<PostgreContext>
+public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>
 {
-   public PostgreContext CreateDbContext(string[] args)
+   public DefaultContext CreateDbContext(string[] args)
    {
       IConfigurationRoot configuration = new ConfigurationBuilder()
           .SetBasePath(Directory.GetCurrentDirectory())
           .AddJsonFile("appsettings.json")
           .Build();
 
-      var builder = new DbContextOptionsBuilder<PostgreContext>();
+      var builder = new DbContextOptionsBuilder<DefaultContext>();
       var connectionString = configuration.GetConnectionString("PostgreSQL");
 
       builder.UseNpgsql(
@@ -40,6 +42,6 @@ public class YourDbContextFactory : IDesignTimeDbContextFactory<PostgreContext>
              b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
       );
 
-      return new PostgreContext(builder.Options);
+      return new DefaultContext(builder.Options);
    }
 }
