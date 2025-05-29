@@ -1,14 +1,16 @@
-namespace YourProject.Application.Common.Models; // Adjust the namespace as per your project structure
+using Ambev.DeveloperEvaluation.Domain.Values;
+
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProducts;
 
 /// <summary>
 /// Request model for getting a user by ID
 /// </summary>
-public class Product
+public class GetProductsResponse
 {
    /// <summary>
    /// The unique identifier of the product to retrieve
    /// </summary>
-   public int Id { get; set; } // Consider using Guid if your backend uses GUIDs for IDs
+   public Guid Id { get; set; } 
 
    /// <summary>
    /// Title or name of the product.
@@ -38,5 +40,5 @@ public class Product
    /// <summary>
    /// Rating information for the product.
    /// </summary>
-   public (double Rate, int Count) Rating { get; set; } = new();
+   public Rating? Rating { get; set; }
 }

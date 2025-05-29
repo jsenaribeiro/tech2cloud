@@ -1,20 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Ambev.DeveloperEvaluation.Common.Pagination;
+using Ambev.DeveloperEvaluation.Domain.Values;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Common;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class BaseController : ControllerBase
 {
     protected int GetCurrentUserId() =>
-            int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new NullReferenceException());
+         int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new NullReferenceException());
 
     protected string GetCurrentUserEmail() =>
         User.FindFirst(ClaimTypes.Email)?.Value ?? throw new NullReferenceException();
 
-    protected IActionResult Ok<T>(T data) =>
-            base.Ok(new ApiResponseWithData<T> { Data = data, Success = true });
+    protected IActionResult Ok<T>(T data, bool isRaw = false) =>
+         isRaw ? base.Ok(data) : base.Ok(new ApiResponseWithData<T> { Data = data, Success = true });
 
     protected IActionResult Created<T>(string routeName, object routeValues, T data) =>
         base.CreatedAtRoute(routeName, routeValues, new ApiResponseWithData<T> { Data = data, Success = true });
@@ -25,10 +27,10 @@ public class BaseController : ControllerBase
     protected IActionResult NotFound(string message = "Resource not found") =>
         base.NotFound(new ApiResponse { Message = message, Success = false });
 
-    protected IActionResult OkPaginated<T>(PaginatedList<T> pagedList) =>
+    protected IActionResult OkPaginated<T>(PageList<T> pagedList) =>
             Ok(new PaginatedResponse<T>
             {
-                Data = pagedList,
+                Data = pagedList.Data,
                 CurrentPage = pagedList.CurrentPage,
                 TotalPages = pagedList.TotalPages,
                 TotalCount = pagedList.TotalCount,

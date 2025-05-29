@@ -31,6 +31,6 @@ This comprehensive evaluation aims to assess both the technical proficiency and 
 
 <br/>
 <div style="display: flex; justify-content: space-between;">
-  <a href="../README.md">Previous: Read Me</a>
+  <a href="index.md">Previous: Read Me</a>
   <a href="./tech-stack.md">Next: Tech Stack</a>
 </div>

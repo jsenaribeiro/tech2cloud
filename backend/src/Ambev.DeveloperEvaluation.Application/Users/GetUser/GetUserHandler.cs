@@ -2,6 +2,7 @@ using AutoMapper;
 using MediatR;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.GetUser;
 
@@ -19,18 +20,16 @@ public class GetUserHandler : IRequestHandler<GetUserQuery, GetUserResult>
     /// <param name="userRepository">The user repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
     /// <param name="validator">The validator for GetUserQuery</param>
-    public GetUserHandler(
-        IUserRepository userRepository,
-        IMapper mapper)
+    public GetUserHandler(IServiceProvider provider)
     {
-        _userRepository = userRepository;
-        _mapper = mapper;
+        _userRepository = provider.GetRequiredService<IUserRepository>();
+        _mapper = provider.GetRequiredService<IMapper>();
     }
 
     /// <summary>
     /// Handles the GetUserQuery request
     /// </summary>
-    /// <param name="request">The GetUser command</param>
+    /// <param name="request">The GetUser query</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The user details if found</returns>
     public async Task<GetUserResult> Handle(GetUserQuery request, CancellationToken cancellationToken)

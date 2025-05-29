@@ -79,14 +79,14 @@ public class UsersController : BaseController
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
 
-        var command = _mapper.Map<GetUserQuery>(request.Id);
-        var response = await _mediator.Send(command, cancellationToken);
+        var query = _mapper.Map<GetUserQuery>(request.Id);
+        var result = await _mediator.Send(query, cancellationToken);
 
         return Ok(new ApiResponseWithData<GetUserResponse>
         {
             Success = true,
             Message = "User retrieved successfully",
-            Data = _mapper.Map<GetUserResponse>(response)
+            Data = _mapper.Map<GetUserResponse>(result)
         });
     }
 
