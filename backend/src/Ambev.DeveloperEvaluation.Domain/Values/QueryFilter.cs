@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
-namespace Ambev.DeveloperEvaluation.Common.Pagination;
+namespace Ambev.DeveloperEvaluation.Domain.Values;
 
 /// <summary>
 /// Filter contract for pagination and ordering

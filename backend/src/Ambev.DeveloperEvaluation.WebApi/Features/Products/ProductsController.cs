@@ -4,7 +4,6 @@ using AutoMapper;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.Application.Products.GetProducts;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProducts;
-using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
 using Ambev.DeveloperEvaluation.WebApi.Features.Products.CreateProduct;
@@ -156,7 +155,7 @@ public class ProductsController : BaseController
    /// <param name="cancellationToken">Cancellation token</param>
    /// <returns>The updated product details</returns>
    [HttpPut("{id}")]
-   [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status201Created)]
+   [ProducesResponseType(typeof(ApiResponseWithData<CreateProductResponse>), StatusCodes.Status200OK)]
    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
    public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
    {

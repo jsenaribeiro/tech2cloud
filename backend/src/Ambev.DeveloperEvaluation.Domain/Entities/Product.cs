@@ -38,5 +38,10 @@ public class Product : BaseEntity<int>
    /// It is ValueObject ORM mapping
    /// </summary>
    public Rating? Rating { get; set; }
+
+   /// <summary>
+   /// CartProducts are part of the product entity.
+   /// </summary>
+   public ICollection<CartProduct> CartProducts { get; set; } = new List<CartProduct>();
 }
 

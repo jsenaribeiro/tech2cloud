@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Values;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCarts;

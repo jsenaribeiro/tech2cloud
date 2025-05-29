@@ -1,5 +1,4 @@
 using Ambev.DeveloperEvaluation.Application.Products.GetProducts;
-using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.Domain.Values;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using AutoMapper;

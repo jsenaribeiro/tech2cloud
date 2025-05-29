@@ -16,6 +16,8 @@ public class GetUserProfile : Profile
       CreateMap<int, GetUserQuery>()
           .ConstructUsing(id => new GetUserQuery(id));
 
-      CreateMap<GetUserResult, GetUserResponse>();
+      CreateMap<GetUserResult, GetUserResponse>()
+         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+         .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()));
    }
 }

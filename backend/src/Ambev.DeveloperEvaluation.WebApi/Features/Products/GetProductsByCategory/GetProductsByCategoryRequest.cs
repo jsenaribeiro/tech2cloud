@@ -1,4 +1,5 @@
-using Ambev.DeveloperEvaluation.Common.Pagination;
+
+using Ambev.DeveloperEvaluation.Domain.Values;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProductsByCategory;
 

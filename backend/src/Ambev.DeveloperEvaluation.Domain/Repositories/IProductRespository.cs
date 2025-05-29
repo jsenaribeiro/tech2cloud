@@ -1,4 +1,3 @@
-using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Values;

@@ -1,12 +1,14 @@
-namespace Ambev.DeveloperEvaluation.Domain.Values;
+using Ambev.DeveloperEvaluation.Domain.Common;
+
+namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
 /// <summary>
 /// Represents a product in the shopping cart.
 /// </summary>
-public class CartProduct
+public class CartProduct : BaseEntity<int>
 {
    /// <summary>
-   /// Initializes a new instance of the <see cref="CartProduct"/> class.
+   /// Initializes a new instance of CarProduct
    /// </summary>
    public CartProduct() { }
 
@@ -18,12 +20,6 @@ public class CartProduct
       ProductId = productId;
       Quantity = quantity;
    }
-
-   /// <summary>
-   /// Unique identifier of the cart product.
-   /// </summary>
-   /// <value></value>
-   public int Id { get; set; }
 
    /// <summary>
    /// Gets or sets the product identifier.

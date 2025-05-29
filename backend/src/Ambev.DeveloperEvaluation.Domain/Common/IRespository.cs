@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.Domain.Values;
 
 namespace Ambev.DeveloperEvaluation.Domain.Common;
@@ -57,5 +56,5 @@ public interface IRepository<E, I> where E : BaseEntity<I> where I : struct, ICo
    /// <param name="id">The unique identifier of the entity to delete</param>
    /// <param name="cancellationToken">Cancellation token</param>
    /// <returns>True if the entity was deleted, false if not found</returns>
-   Task<bool> DeleteAsync(I id, CancellationToken cancellationToken = default);
+   Task<E?> DeleteAsync(I id, CancellationToken cancellationToken = default);
 }

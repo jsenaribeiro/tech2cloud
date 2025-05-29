@@ -5,7 +5,7 @@ namespace Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 /// <summary>
 /// Command for deleting a user
 /// </summary>
-public class DeleteUserCommand : IRequest<DeleteUserResponse>
+public class DeleteUserCommand : IRequest<DeleteUserResult>
 {
     /// <summary>
     /// The unique identifier of the user to delete

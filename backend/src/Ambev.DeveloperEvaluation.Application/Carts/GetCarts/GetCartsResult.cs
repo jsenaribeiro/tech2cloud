@@ -1,5 +1,4 @@
-using Ambev.DeveloperEvaluation.Domain.Enums;
-using Ambev.DeveloperEvaluation.Domain.Values;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.GetCarts;
 

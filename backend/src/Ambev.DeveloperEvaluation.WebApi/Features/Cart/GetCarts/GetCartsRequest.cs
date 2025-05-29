@@ -1,6 +1,4 @@
-using System.Diagnostics;
-using Ambev.DeveloperEvaluation.Common.Pagination;
-using Ambev.DeveloperEvaluation.WebApi.Common;
+using Ambev.DeveloperEvaluation.Domain.Values;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCarts;
 

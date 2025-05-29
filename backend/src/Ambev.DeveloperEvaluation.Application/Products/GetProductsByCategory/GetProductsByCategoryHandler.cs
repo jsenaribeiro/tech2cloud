@@ -3,7 +3,6 @@ using AutoMapper;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.Domain.Values;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.GetProductsByCategory;

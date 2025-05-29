@@ -4,7 +4,6 @@ using AutoMapper;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.Application.Carts.GetCarts;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCarts;
-using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCart;
 using Ambev.DeveloperEvaluation.Application.Carts.GetCart;
 using Ambev.DeveloperEvaluation.WebApi.Features.Carts.CreateCart;
@@ -114,7 +113,7 @@ public class CartsController : BaseController
    /// <param name="cancellationToken">Cancellation token</param>
    /// <returns>The updated cart details</returns>
    [HttpPut("{id}")]
-   [ProducesResponseType(typeof(ApiResponseWithData<CreateCartResponse>), StatusCodes.Status201Created)]
+   [ProducesResponseType(typeof(ApiResponseWithData<CreateCartResponse>), StatusCodes.Status200OK)]
    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
    public async Task<IActionResult> UpdateCart([FromRoute] int id, [FromBody] UpdateCartRequest request, CancellationToken cancellationToken)
    {

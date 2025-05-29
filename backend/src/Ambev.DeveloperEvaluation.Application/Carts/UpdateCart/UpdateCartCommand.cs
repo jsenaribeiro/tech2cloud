@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Values;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;

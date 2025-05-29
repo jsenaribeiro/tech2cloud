@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
@@ -106,11 +105,33 @@ public abstract class BaseRepository<E, I> : IRepository<E, I>
    /// <returns>The updated entity</returns>
    public async Task<E> UpdateAsync(E entity, CancellationToken cancellationToken = default)
    {
-      entity.UpdatedAt = DateTime.UtcNow;
+      if (entity is null) throw new ArgumentNullException(nameof(entity));
 
+      entity.UpdatedAt = DateTime.UtcNow;
       dbSet.Update(entity);
-      await context.SaveChangesAsync();
+      await context.SaveChangesAsync(cancellationToken);
       return entity;
+
+      // var dbEntity = await GetByIdAsync(entity.Id, cancellationToken);
+      // if (dbEntity is null) throw new InvalidOperationException(typeof(E).Name + " not found");
+
+      // foreach (var prop in typeof(E).GetProperties())
+      // {
+      //    if (!prop.CanWrite) continue;
+      //    if (prop.Name is nameof(BaseEntity<I>.Id)) continue;
+      //    if (prop.Name is nameof(BaseEntity<I>.CreatedAt)) continue;
+      //    if (prop.Name is nameof(BaseEntity<I>.UpdatedAt)) continue;
+
+      //    var newValue = prop.GetValue(entity);
+
+      //    if (!Equals(prop.GetValue(dbEntity), newValue))
+      //       prop.SetValue(dbEntity, newValue);
+      // }
+
+      // dbEntity.UpdatedAt = DateTime.UtcNow;
+
+      // await context.SaveChangesAsync(cancellationToken);
+      // return dbEntity;
    }
 
    /// <summary>
@@ -119,13 +140,13 @@ public abstract class BaseRepository<E, I> : IRepository<E, I>
    /// <param name="id">The unique identifier of the entity to delete</param>
    /// <param name="cancellationToken">Cancellation token</param>
    /// <returns>True if the entity was deleted, false if not found</returns>
-   public async Task<bool> DeleteAsync(I id, CancellationToken cancellationToken = default)
+   public async Task<E?> DeleteAsync(I id, CancellationToken cancellationToken = default)
    {
       var entity = await GetByIdAsync(id, cancellationToken);
-      if (entity == null) return false;
+      if (entity == null) return entity;
 
       dbSet.Remove(entity);
       await context.SaveChangesAsync(cancellationToken);
-      return true;
+      return entity;
    }
 }

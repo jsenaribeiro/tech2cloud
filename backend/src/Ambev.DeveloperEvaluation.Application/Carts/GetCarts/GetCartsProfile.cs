@@ -1,6 +1,5 @@
 using AutoMapper;
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.Application.Carts.GetCart;
 using Ambev.DeveloperEvaluation.Domain.Values;
 

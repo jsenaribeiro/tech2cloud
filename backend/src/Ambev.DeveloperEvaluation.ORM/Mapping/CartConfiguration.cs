@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ambev.DeveloperEvaluation.ORM.Mapping;
@@ -11,11 +12,10 @@ public class CartConfiguration : BaseConfiguration<Cart, int>
 
       builder.Property(p => p.UserId).IsRequired();
       builder.Property(p => p.Date).IsRequired();
-      builder.OwnsMany(p => p.Products, x =>
-         {
-            x.WithOwner().HasForeignKey("CartId");
-            x.Property<int>("Id");
-            x.HasKey("Id");
-         });
+
+      builder.HasMany<CartProduct>("products")
+             .WithOne()
+             .HasForeignKey("CartId")
+             .OnDelete(DeleteBehavior.Cascade);
    }
 }

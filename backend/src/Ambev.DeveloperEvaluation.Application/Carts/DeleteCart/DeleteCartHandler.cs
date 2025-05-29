@@ -34,8 +34,8 @@ public class DeleteCartHandler : IRequestHandler<DeleteCartCommand, DeleteCartRe
       if (!validationResult.IsValid)
          throw new ValidationException(validationResult.Errors);
 
-      var success = await _cartRepository.DeleteAsync(request.Id, cancellationToken);
-      if (!success) throw new KeyNotFoundException($"Cart with ID {request.Id} not found");
+      var deletedCart = await _cartRepository.DeleteAsync(request.Id, cancellationToken);
+      if (deletedCart is null) throw new KeyNotFoundException($"Cart with ID {request.Id} not found");
 
       return new DeleteCartResult { Success = true };
    }

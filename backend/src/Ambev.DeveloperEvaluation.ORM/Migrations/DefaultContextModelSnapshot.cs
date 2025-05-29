@@ -47,6 +47,43 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                     b.ToTable("Carts", (string)null);
                 });
 
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.CartProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("CartId1")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("CartId1");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartProduct");
+                });
+
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -131,39 +168,34 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Cart", b =>
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.CartProduct", b =>
                 {
-                    b.OwnsMany("Ambev.DeveloperEvaluation.Domain.Values.CartProduct", "Products", b1 =>
-                        {
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer");
+                    b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Cart", null)
+                        .WithMany("products")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+                    b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Cart", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CartId1");
 
-                            b1.Property<int>("CartId")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("ProductId")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("Quantity")
-                                .HasColumnType("integer");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("CartId");
-
-                            b1.ToTable("CartProduct");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CartId");
-                        });
-
-                    b.Navigation("Products");
+                    b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Product", null)
+                        .WithMany("CartProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
@@ -190,6 +222,121 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         });
 
                     b.Navigation("Rating");
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User", b =>
+                {
+                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Values.Address", "Address", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("AddressCity");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("AddressCountry");
+
+                            b1.Property<int>("Number")
+                                .HasColumnType("integer")
+                                .HasColumnName("AddressNumber");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("AddressState");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("AddressStreet");
+
+                            b1.Property<string>("ZipCode")
+                                .IsRequired()
+                                .HasMaxLength(10)
+                                .HasColumnType("character varying(10)")
+                                .HasColumnName("AddressZipCode");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+
+                            b1.OwnsOne("Ambev.DeveloperEvaluation.Domain.Values.Geo", "Geolocation", b2 =>
+                                {
+                                    b2.Property<int>("AddressUserId")
+                                        .HasColumnType("integer");
+
+                                    b2.Property<double>("Latitude")
+                                        .HasColumnType("double precision")
+                                        .HasColumnName("AddressGeolocationLatitude");
+
+                                    b2.Property<double>("Longitude")
+                                        .HasColumnType("double precision")
+                                        .HasColumnName("AddressGeolocationLongitude");
+
+                                    b2.HasKey("AddressUserId");
+
+                                    b2.ToTable("Users");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("AddressUserId");
+                                });
+
+                            b1.Navigation("Geolocation")
+                                .IsRequired();
+                        });
+
+                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Values.Name", "Name", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("FirstName");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("LastName");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Name");
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Cart", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("products");
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
+                {
+                    b.Navigation("CartProducts");
                 });
 #pragma warning restore 612, 618
         }
