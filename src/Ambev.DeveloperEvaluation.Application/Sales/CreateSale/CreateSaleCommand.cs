@@ -8,6 +8,11 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 public class CreateSaleCommand : IRequest<CreateSaleResult>
 {
    /// <summary>
+   /// The unique identifier of the sale to be createed
+   /// </summary>
+   public int SaleId { get; set; }
+
+   /// <summary>
    /// The unique identifier of the cart containing products to be sold
    /// </summary>
    public int CartId { get; set; }

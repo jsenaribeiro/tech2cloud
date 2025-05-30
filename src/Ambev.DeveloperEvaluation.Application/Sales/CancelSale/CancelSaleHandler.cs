@@ -9,36 +9,37 @@ using Ambev.DeveloperEvaluation.Domain.Common;
 using Microsoft.Extensions.Caching.Distributed;
 using Ambev.DeveloperEvaluation.Domain.Events;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 
-public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
+public class CancelSaleHandler : IRequestHandler<CancelSaleCommand, CancelSaleResult>
 {
    private readonly IMapper _mapper;
    private readonly IUnitOfWork _unitOfWork;
    private readonly IDistributedCache _eventBroker;
 
-   public CreateSaleHandler(IServiceProvider provider)
+   public CancelSaleHandler(IServiceProvider provider)
    {
       _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
       _mapper = provider.GetRequiredService<IMapper>();
       _eventBroker = provider.GetRequiredService<IDistributedCache>();
    }
 
-   public async Task<CreateSaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
+   public async Task<CancelSaleResult> Handle(CancelSaleCommand command, CancellationToken cancellationToken)
    {
       var cart = await _unitOfWork.Carts.GetAsync(command.CartId, cancellationToken);
       if (cart == null) throw new KeyNotFoundException($"Cart {command.CartId} not found");
 
       var sale = await SaleDiscounter.Apply(cart, _unitOfWork, cancellationToken);
 
-      await _unitOfWork.Sales.CreateAsync(sale, cancellationToken);
+      sale.IsCancelled = true;
 
-      var saleCreatedEvent = new SaleCreatedEvent(sale.Id, sale.Amount, sale.Date);
-      var eventJson = JsonSerializer.Serialize(saleCreatedEvent);
+      await _unitOfWork.Sales.UpdateAsync(sale, cancellationToken);
 
-      await _eventBroker.SetStringAsync($"event:SaleCreated:{sale.Id}", eventJson, cancellationToken);
-      Console.WriteLine($"[REDIS] Evento SaleCreated enviado: event:SaleCreated:{sale.Id}");
+      var saleCancelledEvent = new SaleCancelledEvent(sale.Id);
+      var eventJson = JsonSerializer.Serialize(saleCancelledEvent);
 
-      return new CreateSaleResult { Id = sale.Id, Amount = sale.Amount, Discounts = sale.Discounts };
+      await _eventBroker.SetStringAsync($"event:SaleCancelled:{sale.Id}", eventJson, cancellationToken);
+
+      return new CancelSaleResult { Id = sale.Id, Amount = sale.Amount, Discounts = sale.Discounts };
    }
 }

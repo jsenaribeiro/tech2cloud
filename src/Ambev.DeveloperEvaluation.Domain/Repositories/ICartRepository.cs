@@ -5,4 +5,5 @@ using Ambev.DeveloperEvaluation.Domain.Entities;
 
 public interface ICartRepository : IRepository<Cart, int>
 {
+   Task<Cart?> GetAsync(int id, CancellationToken cancellationToken = default);
 }

@@ -22,8 +22,8 @@ public abstract class Repository<E, I> : IRepository<E, I>
    const string INVALID_ID = "Must have a valid Id assigned before being saved in ";
 
 
-   private readonly PostgreContext pgContext;
-   private readonly MongoContext mongoContext;
+   protected readonly PostgreContext pgContext;
+   protected readonly MongoContext mongoContext;
    private readonly DbSet<E> dbSet;
 
    protected IMongoCollection<E> collection => mongoContext.GetCollection<E, I>();
@@ -50,7 +50,7 @@ public abstract class Repository<E, I> : IRepository<E, I>
    /// <param name="id">The unique identifier of the entity E</param>
    /// <param name="cancel">Cancellation token</param>
    /// <returns>The entity if found, null otherwise</returns>
-   public async Task<E?> GetAsync(I id, CancellationToken cancel = default) =>
+   public virtual async Task<E?> GetAsync(I id, CancellationToken cancel = default) =>
       await mongoContext
          .GetCollection<E, I>()
          .Find(e => e.Id.Equals(id))
@@ -62,7 +62,7 @@ public abstract class Repository<E, I> : IRepository<E, I>
    /// <param name="filter">Linq expression</param>
    /// <param name="cancel">Cancellation token</param>
    /// <returns>List of entities</returns>
-   public async Task<List<E>> ListAsync(Expression<Func<E, bool>> filter, CancellationToken cancel = default) =>
+   public virtual async Task<List<E>> ListAsync(Expression<Func<E, bool>> filter, CancellationToken cancel = default) =>
       filter is not null ? await mongoContext.GetCollection<E, I>().Where(filter).ToListAsync(cancel)
                          : throw new ArgumentNullException(nameof(filter));
 
@@ -72,7 +72,7 @@ public abstract class Repository<E, I> : IRepository<E, I>
    /// <param name="filter">Query filter</param>
    /// <param name="cancel">Cancellation token</param>
    /// <returns>Paged list of entities</returns>
-   public async Task<PageList<E>> ListAsync(QueryFilter filter, CancellationToken cancel = default) =>
+   public virtual async Task<PageList<E>> ListAsync(QueryFilter filter, CancellationToken cancel = default) =>
       await QueryAsync(mongoContext.GetCollection<E, I>().Find(Builders<E>.Filter.Empty), filter);
 
    /// <summary>
@@ -98,7 +98,7 @@ public abstract class Repository<E, I> : IRepository<E, I>
       return new PageList<E>(results, (int)total, filter.Page, filter.Size);
    }
 
-   public async Task<long> CountAsync(Expression<Func<E, bool>> query, CancellationToken cancellationToken = default)
+   public virtual async Task<long> CountAsync(Expression<Func<E, bool>> query, CancellationToken cancellationToken = default)
    {
       return query is not null
          ? await mongoContext.GetCollection<E, I>().CountAsync(query, cancellationToken)
@@ -111,7 +111,7 @@ public abstract class Repository<E, I> : IRepository<E, I>
    /// <param name="entity">The entity to create</param>
    /// <param name="cancel">Cancellation token</param>
    /// <returns>The created entity</returns>
-   public async Task<E> CreateAsync(E entity, CancellationToken cancel = default)
+   public virtual async Task<E> CreateAsync(E entity, CancellationToken cancel = default)
    {
       if (entity is null) throw new ArgumentNullException(typeof(E).Name);
 
@@ -149,7 +149,7 @@ public abstract class Repository<E, I> : IRepository<E, I>
    /// <param name="entity">The entity to create</param>
    /// <param name="cancel">Cancellation token</param>
    /// <returns>The updated entity</returns>
-   public async Task<E> UpdateAsync(E entity, CancellationToken cancel = default)
+   public virtual async Task<E> UpdateAsync(E entity, CancellationToken cancel = default)
    {
       if (entity is null) throw new ArgumentNullException(nameof(entity));
 
@@ -195,7 +195,7 @@ public abstract class Repository<E, I> : IRepository<E, I>
    /// <param name="id">The unique identifier of the entity to delete</param>
    /// <param name="cancel">Cancellation token</param>
    /// <returns>True if the entity was deleted, false if not found</returns>
-   public async Task<E?> DeleteAsync(I id, CancellationToken cancel = default)
+   public virtual async Task<E?> DeleteAsync(I id, CancellationToken cancel = default)
    {
       var entity = await GetAsync(id, cancel);
       if (entity == null) return entity;

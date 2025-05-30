@@ -18,6 +18,8 @@ public class PostgreContext : DbContext
 
    public DbSet<Product> Products { get; set; }
 
+   public DbSet<CartProduct> CartProducts { get; set; }
+
    public PostgreContext(ContextOptions options) : base(options) { }
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)

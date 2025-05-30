@@ -8,7 +8,7 @@ public class Sale : Entity<int>
    /// <summary>
    /// Represents the cart associated with the sale.
    /// </summary>
-   public Cart? Cart { get; set; } 
+   public Cart? Cart { get; set; }
 
    /// <summary>
    /// Represents the identifier of the user who made the sale.
@@ -34,5 +34,10 @@ public class Sale : Entity<int>
    /// Represents the final cost of the sale after discounts.
    /// </summary>
    public decimal FullPrice { get; set; }
+
+   /// <summary>
+   /// Represents whether the sale has been cancelled.
+   /// </summary>
+   public bool IsCancelled { get; set; }
 }
 

@@ -12,5 +12,9 @@ public class CartConfiguration : BaseConfiguration<Cart, int>
 
       builder.Property(p => p.UserId).IsRequired();
       builder.Property(p => p.Date).IsRequired();
+      builder.HasMany(c => c.Products)
+             .WithOne()
+             .HasForeignKey(cp => cp.CartId)
+             .OnDelete(DeleteBehavior.Cascade);
    }
 }
