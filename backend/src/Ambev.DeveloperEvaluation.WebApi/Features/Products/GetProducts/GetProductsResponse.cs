@@ -3,7 +3,7 @@ using Ambev.DeveloperEvaluation.Domain.Values;
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.GetProducts;
 
 /// <summary>
-/// Request model for getting a user by ID
+/// Response model for getting a product
 /// </summary>
 public class GetProductsResponse
 {

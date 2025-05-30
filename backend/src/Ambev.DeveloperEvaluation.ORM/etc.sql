@@ -1,4 +1,4 @@
-psql -U developer -d developer_evaluation
+-- psql -U developer -d developer_evaluation
 
 select * from "Users";
 

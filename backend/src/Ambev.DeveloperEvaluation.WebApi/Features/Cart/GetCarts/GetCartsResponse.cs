@@ -4,7 +4,7 @@ using Ambev.DeveloperEvaluation.Domain.Values;
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.GetCarts;
 
 /// <summary>
-/// Request model for getting a user by ID
+/// Response model for getting a cart
 /// </summary>
 public class GetCartsResponse
 {
