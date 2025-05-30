@@ -32,6 +32,28 @@ Before you begin, ensure you have the following installed:
    dotnet restore
    ```
 
+## Structure
+
+The project is structured as follows:
+
+```
+root
+  ├─ README.md
+  ├─ frontend/
+  └─ backend/
+       ├─ src/
+       |   ├── Ambev.DeveloperEvaluation.Common/
+       |   ├── Ambev.DeveloperEvaluation.Application/
+       |   ├── Ambev.DeveloperEvaluation.Domain/
+       |   ├── Ambev.DeveloperEvaluation.IoC/
+       |   ├── Ambev.DeveloperEvaluation.ORM/
+       |   └── Ambev.DeveloperEvaluation.WebApi/
+       └── tests/
+           ├── Ambev.DeveloperEvaluation.Functional/
+           ├── Ambev.DeveloperEvaluation.Integration/
+           └── Ambev.DeveloperEvaluation.Unit/
+```
+
 ### How to Run
 
 Follow these steps to run the project.
@@ -81,6 +103,18 @@ dotnet test
 
 Some design considerations about the implementation decisions during development process to share with the team or for context during technical meetings.
 
+* Cart CRUD API
+
+* Product CRUD API
+
+* User list + update API
+
+* Auth API return fixing
+
+* Unit Tests basics
+
+#### Considerations
+
 * created a IRepository, marker DDD interfaces (IEntity, IAggregate)
 
 * added some implicity validation (price > 0, required, etc)
@@ -116,8 +150,8 @@ Some design considerations about the implementation decisions during development
 
 #### Pendings
 
-* **Business rules**: the business rules conver discounts on price, but there is no api to complete a sale, only a Shopping Cart with no API for payment, billing, etc.
+* **Business rules**: there is no api to complete a sale to apply the discount rules
 
-* **Sales events**: for the same rease, there is no Sales api to apply the event states
+* **Sales events**: for the same reason, there is no Sales api to apply the event states
 
 * **Unit tests**: the test coverage is not fully complete
