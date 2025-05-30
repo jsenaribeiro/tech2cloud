@@ -55,7 +55,7 @@ From the project root directory (where the `.sln` file is located):
 3. **Run the application:**
    
    ```bash
-   dotnet run --project backend/src/Ambev.DeveloperEvaluation.WebApi
+   dotnet run --project ./Ambev.DeveloperEvaluation.WebApi
    ```
    
    This will typically start the application on `http://localhost:5119`. Check the console output for the exact URL. If The documentation is at`https://localhost:5119/swagger` 
