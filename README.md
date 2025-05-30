@@ -102,7 +102,22 @@ root
       └── Ambev.DeveloperEvaluation.Unit/
 ```
 
+## Architecture
 
+* RESTful api
+* Clean Architecture
+* event-driven Architecture 
+* CQRS: Command-Query Responsability Seggregation 
+* Domain-Driven Design
+
+## Patterns
+
+* Repository
+* Unit of Work
+* Specification
+* Service Locator
+* Dependency Injection
+* Mediator Pattern (MediatR)
 
 ## References
 
