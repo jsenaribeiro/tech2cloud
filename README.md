@@ -32,27 +32,6 @@ Before you begin, ensure you have the following installed:
    dotnet restore
    ```
 
-## Structure
-
-The project is structured as follows:
-
-```
-root
-  ├─ README.md
-  ├─ frontend/
-  └─ backend/
-       ├─ src/
-       |   ├── Ambev.DeveloperEvaluation.Common/
-       |   ├── Ambev.DeveloperEvaluation.Application/
-       |   ├── Ambev.DeveloperEvaluation.Domain/
-       |   ├── Ambev.DeveloperEvaluation.IoC/
-       |   ├── Ambev.DeveloperEvaluation.ORM/
-       |   └── Ambev.DeveloperEvaluation.WebApi/
-       └── tests/
-           ├── Ambev.DeveloperEvaluation.Functional/
-           ├── Ambev.DeveloperEvaluation.Integration/
-           └── Ambev.DeveloperEvaluation.Unit/
-```
 
 ### How to Run
 
@@ -98,6 +77,27 @@ dotnet test
 ```
 
 
+## Structure
+
+The project is structured as follows:
+
+```
+root
+  ├─ README.md
+  ├─ frontend/
+  └─ backend/
+       ├─ src/
+       |   ├── Ambev.DeveloperEvaluation.Common/
+       |   ├── Ambev.DeveloperEvaluation.Application/
+       |   ├── Ambev.DeveloperEvaluation.Domain/
+       |   ├── Ambev.DeveloperEvaluation.IoC/
+       |   ├── Ambev.DeveloperEvaluation.ORM/
+       |   └── Ambev.DeveloperEvaluation.WebApi/
+       └── tests/
+           ├── Ambev.DeveloperEvaluation.Functional/
+           ├── Ambev.DeveloperEvaluation.Integration/
+           └── Ambev.DeveloperEvaluation.Unit/
+```
 
 ## Change logs
 
