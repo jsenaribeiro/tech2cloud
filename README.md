@@ -32,7 +32,7 @@ Before you begin, ensure you have the following installed:
    dotnet restore
    ```
 
-### ## How to Run
+### How to Run
 
 Follow these steps to run the project.
 
