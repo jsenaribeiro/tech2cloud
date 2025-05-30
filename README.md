@@ -43,7 +43,7 @@ From the project root directory (where the `.sln` file is located):
 1. **Go to root folder:**
    
    ```bash
-      cd backend/src
+   cd backend/src
    ```
 
 2. **Run the databases:**
@@ -55,7 +55,7 @@ From the project root directory (where the `.sln` file is located):
 3. **Run the application:**
    
    ```bash
-   dotnet run --project backend/src/Ambev.DeveloperEvaluation.WebApi # Or your main project path
+   dotnet run --project backend/src/Ambev.DeveloperEvaluation.WebApi
    ```
    
    This will typically start the application on `http://localhost:5119`. Check the console output for the exact URL. If The documentation is at`https://localhost:5119/swagger` 
@@ -66,31 +66,26 @@ From the project root directory (where the `.sln` file is located):
 
 This section outlines how to run the project's tests.
 
-### Running Unit Tests
+### Running tests
 
-Unit tests are located in the `tests/YourProjectName.Tests` directory.
-
-From the project root directory:
+The test projects are located in the `backend/src/tests` directory. 
 
 ```bash
-cd src
-dotnet test solution
+cd backend/src
+dotnet test
 ```
 
 
 
 ## Change logs
 
-Some architectural and development consideration in current stage.
+Some design considerations about the implementation decisions during development process to share with the team or for context during technical meetings.
 
-#### Evoluations
+* created a IRepository, marker DDD interfaces (IEntity, IAggregate)
 
-* create a shared IRepository
-* create marker DDD interfaces (IEntity, IAggregate)
 * added some implicity validation (price > 0, required, etc)
-* abstract repository for basic CRUD
 
-#### Fixings
+* abstract repository for shared reusable EfCore CRUD
 
 * fix GetUserQuery to GetUserQuery (CQRS)
 
@@ -106,27 +101,23 @@ Some architectural and development consideration in current stage.
 
 * PageList (remove EfCore dependency to keep a isolated domain )
 
-* change Id to integer
-
 * fix delete API messages to string
 
-## Futures
+#### Suggestions
 
 * change Domain to DDD module pattern (DDD namespace)
 * maybe sort is best for filter, not _order, order could mean buy request
 * centralize all message error as constants for reuse and tests
 
-#### Issues
+#### Questions
 
-* double validator (GetUserRequestValidator + GetUserValidator)
-* exposed password  field in the user response
-  
-  
+* validator duplicity between GetUserRequestValidator + GetUserValidator
+* lack of security with exposed password  field in the user response in requirements
 
 #### Pendings
 
-* Business rules: the business rules conver discounts on price, but there is no api to complete a sale, only a Shopping Cart with no API for payment, billing, etc.
+* **Business rules**: the business rules conver discounts on price, but there is no api to complete a sale, only a Shopping Cart with no API for payment, billing, etc.
 
-* Sales events: for the same rease, there is no Sales api to apply the event states
+* **Sales events**: for the same rease, there is no Sales api to apply the event states
 
-* Unit tests: the test coverage is not complete
+* **Unit tests**: the test coverage is not fully complete
