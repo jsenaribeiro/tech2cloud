@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Microsoft.Extensions.DependencyInjection;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 
@@ -13,16 +14,16 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart;
 /// </summary>
 public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartResult>
 {
-   private readonly ICartRepository _cartRepository;
+   private readonly IUnitOfWork _unitOfWork;
    private readonly IMapper _mapper;
 
    /// <summary>
    /// Initializes a new instance of UpdateCartHandler
    /// </summary>
-   /// <param name="provider">The service locator for dependencies</param>
+   /// <param name="provider">Service locator for DI</param>
    public UpdateCartHandler(IServiceProvider provider)
    {
-      _cartRepository = provider.GetRequiredService<ICartRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
       _mapper = provider.GetRequiredService<IMapper>();
    }
 
@@ -41,7 +42,7 @@ public class UpdateCartHandler : IRequestHandler<UpdateCartCommand, UpdateCartRe
          throw new ValidationException(validationResult.Errors);
 
       var cart = _mapper.Map<Cart>(command);
-      var updatedCart = await _cartRepository.UpdateAsync(cart, cancellationToken);
+      var updatedCart = await _unitOfWork.Carts.UpdateAsync(cart, cancellationToken);
       var result = _mapper.Map<UpdateCartResult>(updatedCart);
 
       return result;

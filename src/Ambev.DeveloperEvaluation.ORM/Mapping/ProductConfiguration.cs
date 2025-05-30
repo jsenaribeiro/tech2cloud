@@ -8,6 +8,8 @@ public class ProductConfiguration : BaseConfiguration<Product, int>
 {
    public override void Configure(EntityTypeBuilder<Product> builder)
    {
+      base.Configure(builder);
+      
       builder.Property(p => p.Title).IsRequired();
       builder.Property(p => p.Price).IsRequired();
       builder.Property(p => p.Description).IsRequired();

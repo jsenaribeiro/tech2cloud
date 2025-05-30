@@ -2,7 +2,7 @@
 
 namespace Ambev.DeveloperEvaluation.Domain.Common;
 
-public abstract class BaseEntity<I> : IComparable<BaseEntity<I>> where I : struct, IComparable
+public abstract class Entity<I> : IComparable<Entity<I>> where I : struct, IComparable
 {
    /// <summary>
    /// The unique identifier of the entity
@@ -22,7 +22,7 @@ public abstract class BaseEntity<I> : IComparable<BaseEntity<I>> where I : struc
    public Task<IEnumerable<ValidationErrorDetail>> ValidateAsync() =>
        Validator.ValidateAsync(this);
 
-   public int CompareTo(BaseEntity<I>? other)
+   public int CompareTo(Entity<I>? other)
    {
       if (other == null) return 1;
       return Id.CompareTo(other.Id);

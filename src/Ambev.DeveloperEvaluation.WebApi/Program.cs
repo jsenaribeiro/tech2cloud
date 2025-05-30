@@ -9,6 +9,9 @@ using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Serilog;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using StackExchange.Redis;
+using Ambev.DeveloperEvaluation.WebApi.Common;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
 
@@ -23,20 +26,13 @@ public class Program
          var builder = WebApplication.CreateBuilder(args);
 
          builder.AddDefaultLogging();
+         builder.AddBasicHealthChecks();
          builder.Services.AddControllers();
          builder.Services.AddEndpointsApiExplorer();
-         builder.AddBasicHealthChecks();
          builder.Services.AddSwaggerGen();
          builder.Services.AddRouting(options => options.LowercaseUrls = true);
-         builder.Services.AddDbContext<DefaultContext>(options =>
-             options.UseNpgsql(
-                 builder.Configuration.GetConnectionString("PostgreSQL"),
-                 b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
-             )
-         );
-
          builder.Services.AddJwtAuthentication(builder.Configuration);
-         builder.RegisterDependencies();
+         builder.RegisterDependencies(); // repositories, databases, etc
 
          builder.Services.AddAutoMapper(
             typeof(Program).Assembly,

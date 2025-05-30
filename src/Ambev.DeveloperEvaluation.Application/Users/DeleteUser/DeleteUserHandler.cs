@@ -3,6 +3,7 @@ using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 
@@ -11,17 +12,16 @@ namespace Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 /// </summary>
 public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, DeleteUserResult>
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
    private readonly IMapper _mapper;
 
    /// <summary>
    /// Initializes a new instance of DeleteUserHandler
    /// </summary>
-   /// <param name="userRepository">The user repository</param>
-   /// <param name="validator">The validator for DeleteUserCommand</param>
+   /// <param name="provider">Service locator for DI</param>
    public DeleteUserHandler(IServiceProvider provider)
    {
-      _userRepository = provider.GetRequiredService<IUserRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
       _mapper = provider.GetRequiredService<IMapper>();
    }
 
@@ -39,7 +39,7 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, DeleteUserRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var deletedUser = await _userRepository.DeleteAsync(request.Id, cancellationToken);
+        var deletedUser = await _unitOfWork.Users.DeleteAsync(request.Id, cancellationToken);
         if (deletedUser is null) throw new KeyNotFoundException($"User with ID {request.Id} not found");
 
       return _mapper.Map<DeleteUserResult>(deletedUser);

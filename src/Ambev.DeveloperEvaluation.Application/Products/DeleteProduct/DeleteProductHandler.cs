@@ -2,6 +2,7 @@ using MediatR;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 
@@ -10,15 +11,14 @@ namespace Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 /// </summary>
 public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, DeleteProductResult>
 {
-   private readonly IProductRepository _productRepository;
+   private readonly IUnitOfWork _unitOfWork;
 
    /// <summary>
    /// Initializes a new instance of DeleteProductHandler
    /// </summary>
-   /// <param name="productRepository">The product repository</param>
-   /// <param name="validator">The validator for DeleteProductCommand</param>
+   /// <param name="provider">Service locator for DI</param>
    public DeleteProductHandler(IServiceProvider provider) =>
-      _productRepository = provider.GetRequiredService<IProductRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
 
    /// <summary>
    /// Handles the DeleteProductCommand request
@@ -34,7 +34,7 @@ public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, Delete
       if (!validationResult.IsValid)
          throw new ValidationException(validationResult.Errors);
 
-      var deleted = await _productRepository.DeleteAsync(request.Id, cancellationToken);
+      var deleted = await _unitOfWork.Products.DeleteAsync(request.Id, cancellationToken);
       if (deleted is null) throw new KeyNotFoundException($"Product with ID {request.Id} not found");
 
       return new DeleteProductResult { Success = true };

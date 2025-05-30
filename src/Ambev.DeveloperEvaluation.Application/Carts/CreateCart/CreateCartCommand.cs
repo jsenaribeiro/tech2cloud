@@ -22,7 +22,7 @@ public class CreateCartCommand : IRequest<CreateCartResult>, IValidate
    /// <summary>
    /// The list of products in the cart
    /// </summary>
-   public List<CartProduct> Products { get; set; } = new();
+   public List<CreateCartProductCommand> Products { get; set; } = new();
 
    public ValidationResultDetail Validate()
    {

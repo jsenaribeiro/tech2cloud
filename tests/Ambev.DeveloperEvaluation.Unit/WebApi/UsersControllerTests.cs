@@ -12,13 +12,11 @@ using Ambev.DeveloperEvaluation.Application.Users.GetUsers;
 
 namespace Ambev.DeveloperEvaluation.Unit.WebApi;
 
-public class UsersControllerTests
+public class UsersControllerTests : AbstractTests
 {
-   private readonly IMediator _mediator = Substitute.For<IMediator>();
-   private readonly IMapper _mapper = Substitute.For<IMapper>();
    private readonly UsersController _controller;
 
-   public UsersControllerTests() => _controller = new UsersController(_mediator, _mapper);
+   public UsersControllerTests() => _controller = new UsersController(provider);
 
    [Fact(Skip = "Should a valid request return user with success")]
    public async Task GetUser_ReturnsOk_WhenUserExists()

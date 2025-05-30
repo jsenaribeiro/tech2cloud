@@ -6,9 +6,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities;
 /// <summary>
 /// /// Represents a shopping cart for a user.
 /// </summary> <summary>
-public class Cart : BaseEntity<int>, IAggregate<CartProduct>
+public class Cart : Entity<int>, IAggregate<CartProduct>
 {
-   public List<CartProduct> products { get; } = new();
+   private readonly List<CartProduct> products = new();
 
    /// <summary>
    /// The unique identifier of the User
@@ -26,18 +26,25 @@ public class Cart : BaseEntity<int>, IAggregate<CartProduct>
    public IReadOnlyCollection<CartProduct> Products => products.AsReadOnly();
 
    /// <summary>
-   /// Appends a product to the cart.
+   /// Adds a product to the cart.
    /// </summary>
    public void Append(CartProduct entity)
    {
+      var uniqueItems = products.Select(x => x.ProductId).Distinct();
+
+      foreach (var productId in uniqueItems)
+      {
+         var maxLimitSameProductError = $"Only allowed 20 units of same product id: {productId}";
+
+         if (products.Count(x => x.ProductId == productId) >= 20)
+            throw new InvalidOperationException(maxLimitSameProductError);
+      }
+
       products.Add(entity);
    }
 
    /// <summary>
    /// Removes a product from the cart.
    /// </summary>
-   public void Remove(CartProduct entity)
-   {
-      products.Remove(entity);
-   }
+   public void Remove(CartProduct entity) => products.Remove(entity);
 }

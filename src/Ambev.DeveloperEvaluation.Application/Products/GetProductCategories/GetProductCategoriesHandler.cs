@@ -3,6 +3,7 @@ using AutoMapper;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.GetProductCategories;
 
@@ -11,14 +12,14 @@ namespace Ambev.DeveloperEvaluation.Application.Products.GetProductCategories;
 /// </summary>
 public class GetProductCategoriesHandler : IRequestHandler<GetProductCategoriesQuery, string[]>
 {
-   private readonly IProductRepository _productRepository;
+   private readonly IUnitOfWork _unitOfWork;
 
    /// <summary>
    /// Initializes a new instance of GetProductCategoriesHandler
    /// </summary>
-   /// <param name="provider">The service locator for dependencies</param>
+   /// <param name="provider">Service locator for DI</param>
    public GetProductCategoriesHandler(IServiceProvider provider) =>
-      _productRepository = provider.GetRequiredService<IProductRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
 
    /// <summary>
    /// Handles the GetProductCategoriesQuery request
@@ -28,7 +29,7 @@ public class GetProductCategoriesHandler : IRequestHandler<GetProductCategoriesQ
    /// <returns>The categories if found</returns>
    public async Task<string[]> Handle(GetProductCategoriesQuery request, CancellationToken cancellationToken)
    {
-      var categories = await _productRepository.ListAllCategoriesAsync();
+      var categories = await _unitOfWork.Products.ListAllCategoriesAsync();
       if (categories is null) throw new KeyNotFoundException($"Categories not found");
 
       return categories.ToArray();

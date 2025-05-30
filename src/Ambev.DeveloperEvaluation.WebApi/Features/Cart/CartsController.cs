@@ -29,12 +29,11 @@ public class CartsController : BaseController
    /// <summary>
    /// Initializes a new instance of CartsController
    /// </summary>
-   /// <param name="mediator">The mediator instance</param>
-   /// <param name="mapper">The AutoMapper instance</param>
-   public CartsController(IMediator mediator, IMapper mapper)
+   /// <param name="provider">Service provider for dependency injection</param>
+   public CartsController(IServiceProvider provider)
    {
-      _mediator = mediator;
-      _mapper = mapper;
+      _mediator = provider.GetRequiredService<IMediator>();
+      _mapper = provider.GetRequiredService<IMapper>();
    }
 
    /// <summary>

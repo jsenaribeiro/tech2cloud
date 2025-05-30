@@ -2,6 +2,7 @@ using MediatR;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.DeleteCart;
 
@@ -10,15 +11,14 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.DeleteCart;
 /// </summary>
 public class DeleteCartHandler : IRequestHandler<DeleteCartCommand, DeleteCartResult>
 {
-   private readonly ICartRepository _cartRepository;
+   private readonly IUnitOfWork _unitOfWork;
 
    /// <summary>
    /// Initializes a new instance of DeleteCartHandler
    /// </summary>
-   /// <param name="cartRepository">The cart repository</param>
-   /// <param name="validator">The validator for DeleteCartCommand</param>
+   /// <param name="provider">Service locator for DI</param>
    public DeleteCartHandler(IServiceProvider provider) =>
-      _cartRepository = provider.GetRequiredService<ICartRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
 
    /// <summary>
    /// Handles the DeleteCartCommand request
@@ -34,7 +34,7 @@ public class DeleteCartHandler : IRequestHandler<DeleteCartCommand, DeleteCartRe
       if (!validationResult.IsValid)
          throw new ValidationException(validationResult.Errors);
 
-      var deletedCart = await _cartRepository.DeleteAsync(request.Id, cancellationToken);
+      var deletedCart = await _unitOfWork.Carts.DeleteAsync(request.Id, cancellationToken);
       if (deletedCart is null) throw new KeyNotFoundException($"Cart with ID {request.Id} not found");
 
       return new DeleteCartResult { Success = true };

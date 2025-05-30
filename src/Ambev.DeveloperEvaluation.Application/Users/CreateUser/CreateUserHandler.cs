@@ -4,6 +4,8 @@ using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Common.Security;
+using Microsoft.Extensions.DependencyInjection;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 
@@ -13,20 +15,18 @@ namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserResult>
 {
     private readonly IMapper _mapper;
-    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IPasswordHasher _passwordHasher;
 
     /// <summary>
     /// Initializes a new instance of CreateUserHandler
     /// </summary>
-    /// <param name="userRepository">The user repository</param>
-    /// <param name="mapper">The AutoMapper instance</param>
-    /// <param name="validator">The validator for CreateUserCommand</param>
-    public CreateUserHandler(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher)
+    /// <param name="provider">The service provider</param>
+    public CreateUserHandler(IServiceProvider provider)
     {
-        _userRepository = userRepository;
-        _mapper = mapper;
-        _passwordHasher = passwordHasher;
+        _mapper = provider.GetRequiredService<IMapper>();
+        _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+        _passwordHasher = provider.GetRequiredService<IPasswordHasher>();
     }
 
     /// <summary>
@@ -43,14 +43,12 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, CreateUserRe
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var existingUser = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
-        if (existingUser != null)
-            throw new InvalidOperationException($"User with email {command.Email} already exists");
+        var existingUser = await _unitOfWork.Users.GetByEmailAsync(command.Email, cancellationToken);
+        if (existingUser != null) throw new InvalidOperationException($"This email {command.Email} already exists");
 
         var user = _mapper.Map<User>(command);
         user.Password = _passwordHasher.HashPassword(command.Password);
-
-        var createdUser = await _userRepository.CreateAsync(user, cancellationToken);
+        var createdUser = await _unitOfWork.Users.CreateAsync(user, cancellationToken);
         var result = _mapper.Map<CreateUserResult>(createdUser);
         return result;
     }

@@ -4,6 +4,7 @@ using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Ambev.DeveloperEvaluation.Domain.Values;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Carts.GetCarts;
 
@@ -12,17 +13,16 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.GetCarts;
 /// </summary>
 public class GetCartsHandler : IRequestHandler<GetCartsQuery, PageList<GetCartsResult>>
 {
-   private readonly ICartRepository _cartRepository;
-   
+   private readonly IUnitOfWork _unitOfWork;
    private readonly IMapper _mapper;
 
    /// <summary>
    /// Initializes a new instance of GetCartsHandler
    /// </summary>
-   /// <param name="provider">The service locator for dependencies</param>
+   /// <param name="provider">Service locator for dependencies</param>
    public GetCartsHandler(IServiceProvider provider)
    {
-      _cartRepository = provider.GetRequiredService<ICartRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
       _mapper = provider.GetRequiredService<IMapper>();
    }
 
@@ -34,7 +34,7 @@ public class GetCartsHandler : IRequestHandler<GetCartsQuery, PageList<GetCartsR
    /// <returns>The cart list if found</returns>
    public async Task<PageList<GetCartsResult>> Handle(GetCartsQuery request, CancellationToken cancellationToken)
    {
-      var carts = await _cartRepository.ListAsync(request);
+      var carts = await _unitOfWork.Carts.ListAsync(request);
       if (carts is null) throw new KeyNotFoundException($"Carts not found");
 
       return _mapper.Map<PageList<GetCartsResult>>(carts);

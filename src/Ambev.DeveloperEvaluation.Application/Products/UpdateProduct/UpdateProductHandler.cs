@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Microsoft.Extensions.DependencyInjection;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 
@@ -13,7 +14,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 /// </summary>
 public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, UpdateProductResult>
 {
-   private readonly IProductRepository _productRepository;
+   private readonly IUnitOfWork _unitOfWork;
    private readonly IMapper _mapper;
 
    /// <summary>
@@ -22,7 +23,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
    /// <param name="provider">The service locator for dependencies</param>
    public UpdateProductHandler(IServiceProvider provider)
    {
-      _productRepository = provider.GetRequiredService<IProductRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
       _mapper = provider.GetRequiredService<IMapper>();
    }
 
@@ -41,7 +42,7 @@ public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Update
          throw new ValidationException(validationResult.Errors);
 
       var product = _mapper.Map<Product>(command);
-      var updatedProduct = await _productRepository.UpdateAsync(product, cancellationToken);
+      var updatedProduct = await _unitOfWork.Products.UpdateAsync(product, cancellationToken);
       var result = _mapper.Map<UpdateProductResult>(updatedProduct);
 
       return result;

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
-    [DbContext(typeof(DefaultContext))]
+    [DbContext(typeof(PostgreContext))]
     [Migration("20250529205449_AddNewColumnsToUserTable")]
     partial class AddNewColumnsToUserTable
     {

@@ -4,6 +4,7 @@ using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Ambev.DeveloperEvaluation.Domain.Values;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.GetUsers;
 
@@ -12,17 +13,16 @@ namespace Ambev.DeveloperEvaluation.Application.Users.GetUsers;
 /// </summary>
 public class GetUsersHandler : IRequestHandler<GetUsersQuery, PageList<GetUsersResult>>
 {
-   private readonly IUserRepository _userRepository;
-   
+   private readonly IUnitOfWork _unitOfWork;
    private readonly IMapper _mapper;
 
    /// <summary>
    /// Initializes a new instance of GetUsersHandler
    /// </summary>
-   /// <param name="provider">The service locator for dependencies</param>
+   /// <param name="provider">Service locator for DI</param>
    public GetUsersHandler(IServiceProvider provider)
    {
-      _userRepository = provider.GetRequiredService<IUserRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
       _mapper = provider.GetRequiredService<IMapper>();
    }
 
@@ -34,7 +34,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, PageList<GetUsersR
    /// <returns>The user list if found</returns>
    public async Task<PageList<GetUsersResult>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
    {
-      var users = await _userRepository.ListAsync(request);
+      var users = await _unitOfWork.Users.ListAsync(request);
       if (users is null) throw new KeyNotFoundException($"Users not found");
 
       return _mapper.Map<PageList<GetUsersResult>>(users);

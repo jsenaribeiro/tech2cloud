@@ -2,6 +2,7 @@ using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Ambev.DeveloperEvaluation.Unit.Domain;
 using AutoMapper;
 using FluentAssertions;
@@ -26,10 +27,17 @@ public class CreateUserHandlerTests
     /// </summary>
     public CreateUserHandlerTests()
     {
-        _userRepository = Substitute.For<IUserRepository>();
         _mapper = Substitute.For<IMapper>();
+        _userRepository = Substitute.For<IUserRepository>();
         _passwordHasher = Substitute.For<IPasswordHasher>();
-        _handler = new CreateUserHandler(_userRepository, _mapper, _passwordHasher);
+
+         var serviceProvider = new ServiceCollection()
+            .AddSingleton(_mapper)
+            .AddSingleton(_userRepository)
+            .AddSingleton(_passwordHasher)
+            .BuildServiceProvider();
+
+        _handler = new CreateUserHandler(serviceProvider);
     }
 
     /// <summary>

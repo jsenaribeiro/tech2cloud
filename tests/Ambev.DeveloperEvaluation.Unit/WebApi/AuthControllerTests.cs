@@ -10,13 +10,11 @@ using FluentAssertions;
 
 namespace Ambev.DeveloperEvaluation.Unit.WebApi;
 
-public class AuthControllerTests
+public class AuthControllerTests : AbstractTests
 {
-   private readonly IMediator _mediator = Substitute.For<IMediator>();
-   private readonly IMapper _mapper = Substitute.For<IMapper>();
    private readonly AuthController _controller;
 
-   public AuthControllerTests() => _controller = new AuthController(_mediator, _mapper);
+   public AuthControllerTests() => _controller = new AuthController(provider);
 
    [Fact(Skip = "Should a valid request authenticate the user")]
    public async Task AuthenticateUser_ReturnsOk_WhenCredentialsAreValid()

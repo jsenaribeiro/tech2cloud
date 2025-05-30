@@ -27,5 +27,5 @@ public class CreateCartResponse
    /// <summary>
    /// The list of products in the cart
    /// </summary>
-   public List<CartProduct> Products { get; set; } = new();
+   public List<CreateCartProductResponse> Products { get; set; } = new();
 }

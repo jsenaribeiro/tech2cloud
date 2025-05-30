@@ -29,12 +29,11 @@ public class UsersController : BaseController
    /// <summary>
    /// Initializes a new instance of UsersController
    /// </summary>
-   /// <param name="mediator">The mediator instance</param>
-   /// <param name="mapper">The AutoMapper instance</param>
-   public UsersController(IMediator mediator, IMapper mapper)
+   /// <param name="provider">The service provider instance</param>
+   public UsersController(IServiceProvider provider)
    {
-      _mediator = mediator;
-      _mapper = mapper;
+      _mediator = provider.GetRequiredService<IMediator>();
+      _mapper = provider.GetRequiredService<IMapper>();
    }
 
    /// <summary>

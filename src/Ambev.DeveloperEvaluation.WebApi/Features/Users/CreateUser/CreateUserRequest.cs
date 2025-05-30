@@ -41,10 +41,10 @@ public class CreateUserRequest
    /// <summary>
    /// First and last names of the user.
    /// </summary>
-   public Name? Name { get; set; }
+   public Name Name { get; set; } = null!;
 
    /// <summary>
    /// Address details of the user.
    /// </summary>
-   public Address? Address { get; set; }
+   public Address Address { get; set; } = null!;
 }

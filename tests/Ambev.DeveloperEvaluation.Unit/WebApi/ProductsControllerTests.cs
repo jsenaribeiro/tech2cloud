@@ -12,13 +12,11 @@ using Ambev.DeveloperEvaluation.Application.Products.GetProducts;
 
 namespace Ambev.DeveloperEvaluation.Unit.WebApi;
 
-public class ProductsControllerTests
+public class ProductsControllerTests : AbstractTests
 {
-   private readonly IMediator _mediator = Substitute.For<IMediator>();
-   private readonly IMapper _mapper = Substitute.For<IMapper>();
    private readonly ProductsController _controller;
 
-   public ProductsControllerTests() => _controller = new ProductsController(_mediator, _mapper);
+   public ProductsControllerTests() => _controller = new ProductsController(provider);
 
    [Fact(Skip = "Should a valid request return product with success")]
    public async Task GetProduct_ReturnsOk_WhenProductExists()

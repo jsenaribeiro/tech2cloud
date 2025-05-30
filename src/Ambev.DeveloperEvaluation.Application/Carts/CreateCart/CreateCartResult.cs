@@ -25,5 +25,5 @@ public class CreateCartResult
    /// <summary>
    /// The list of products in the cart
    /// </summary>
-   public List<CartProduct> Products { get; set; } = new();
+   public List<CreateCartProductResult> Products { get; set; } = new();
 }

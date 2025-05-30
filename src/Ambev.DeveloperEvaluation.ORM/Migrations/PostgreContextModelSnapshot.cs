@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
-    [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PostgreContext))]
+    partial class PostgreContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -55,10 +55,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CartId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("CartId1")
+                    b.Property<int>("CartId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -77,11 +74,9 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("CartId1");
-
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartProduct");
+                    b.ToTable("CartProducts", (string)null);
                 });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>
@@ -119,7 +114,49 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Sale", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("Id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Amount");
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("integer")
+                        .HasColumnName("CartId");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("Date");
+
+                    b.Property<decimal>("Discounts")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("Discounts");
+
+                    b.Property<decimal>("FullPrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("FullPrice");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("Sales", (string)null);
                 });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User", b =>
@@ -183,13 +220,10 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.CartProduct", b =>
                 {
                     b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Cart", null)
-                        .WithMany("products")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Cart", null)
                         .WithMany("Products")
-                        .HasForeignKey("CartId1");
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Product", null)
                         .WithMany("CartProducts")
@@ -222,6 +256,17 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                         });
 
                     b.Navigation("Rating");
+                });
+
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Sale", b =>
+                {
+                    b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Cart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User", b =>
@@ -272,18 +317,22 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
 
-                            b1.OwnsOne("Ambev.DeveloperEvaluation.Domain.Values.Geo", "Geolocation", b2 =>
+                            b1.OwnsOne("Ambev.DeveloperEvaluation.Domain.Values.Geolocation", "Geolocation", b2 =>
                                 {
                                     b2.Property<int>("AddressUserId")
                                         .HasColumnType("integer");
 
-                                    b2.Property<double>("Latitude")
-                                        .HasColumnType("double precision")
-                                        .HasColumnName("AddressGeolocationLatitude");
+                                    b2.Property<string>("Latitude")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("AddressGeolocationLatitude")
+                                        .HasAnnotation("Relational:JsonPropertyName", "lat");
 
-                                    b2.Property<double>("Longitude")
-                                        .HasColumnType("double precision")
-                                        .HasColumnName("AddressGeolocationLongitude");
+                                    b2.Property<string>("Longitude")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("AddressGeolocationLongitude")
+                                        .HasAnnotation("Relational:JsonPropertyName", "long");
 
                                     b2.HasKey("AddressUserId");
 
@@ -330,8 +379,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Cart", b =>
                 {
                     b.Navigation("Products");
-
-                    b.Navigation("products");
                 });
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product", b =>

@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using System.ComponentModel;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Values;
 
@@ -15,12 +16,12 @@ public class CreateCartRequest
    public int UserId { get; set; }
 
    /// <summary>
-   /// The date when the cart was created or last updated
+   /// The date string when cart was created
    /// </summary>
-   public DateTime Date { get; set; }
+   public string Date { get; set; } = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
    /// <summary>
    /// The list of products in the cart
    /// </summary>
-   public List<CartProduct> Products { get; set; } = new();
+   public List<CreateCartProductRequest> Products { get; set; } = new();
 }

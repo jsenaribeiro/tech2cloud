@@ -1,6 +1,6 @@
 namespace Ambev.DeveloperEvaluation.Domain.Common;
 
-public interface IAggregate<T> where T : BaseEntity<int>
+public interface IAggregate<T> where T : Entity<int>
 {
    /// <summary>
    /// Adds an entity to the aggregate.

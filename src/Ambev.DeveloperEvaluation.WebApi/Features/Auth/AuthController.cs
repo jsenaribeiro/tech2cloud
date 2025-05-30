@@ -20,12 +20,11 @@ public class AuthController : BaseController
     /// <summary>
     /// Initializes a new instance of AuthController
     /// </summary>
-    /// <param name="mediator">The mediator instance</param>
-    /// <param name="mapper">The AutoMapper instance</param>
-    public AuthController(IMediator mediator, IMapper mapper)
+    /// <param name="provider">Service provider for dependency injection</param>
+    public AuthController(IServiceProvider provider)
     {
-        _mediator = mediator;
-        _mapper = mapper;
+        _mediator = provider.GetRequiredService<IMediator>();
+        _mapper = provider.GetRequiredService<IMapper>();
     }
 
     /// <summary>

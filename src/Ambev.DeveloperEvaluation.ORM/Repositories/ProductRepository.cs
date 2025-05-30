@@ -2,13 +2,14 @@ using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Values;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 
 /// <summary>
 /// Implementation of IProductRepository using Entity Framework Core
 /// </summary>
-public class ProductRepository : BaseRepository<Product, int>, IProductRepository
+public class ProductRepository : Repository<Product, int>, IProductRepository
 {
    /// <summary>
    /// Initializes a new instance of ProductRepository
@@ -16,8 +17,15 @@ public class ProductRepository : BaseRepository<Product, int>, IProductRepositor
    /// <param name="context">The database context</param>
    public ProductRepository(IServiceProvider provider) : base(provider) { }
 
-   public Task<string[]> ListAllCategoriesAsync() =>
-      dbSet.Select(x => x.Category).Distinct().ToArrayAsync();
+   /// <summary>
+   /// Retrieves all categories of products
+   /// </summary>
+   /// <returns>Product categories</returns>
+   public async Task<string[]> ListAllCategoriesAsync()
+   {
+      var categories = await collection.Select(x => x.Category).ToListAsync();
+      return categories.Distinct().ToArray();
+   }
 
    /// <summary>
    /// Retrieves a paginated list of products filtered by category
@@ -25,9 +33,10 @@ public class ProductRepository : BaseRepository<Product, int>, IProductRepositor
    /// <param name="filter">Query filter for pagination</param>
    /// <param name="category">Product category filter</param>
    /// <returns>The paginated list of products by category</returns>
-   public Task<PageList<Product>> ListByCategoryAsync(QueryFilter filter, string category)
+   public async Task<PageList<Product>> ListByCategoryAsync(QueryFilter filter, string category)
    {
-      var productsByCategory = dbSet.Where(x => x.Category.ToLower() == category.ToLower());
-      return QueryAsync(productsByCategory, filter);
+      var productsByCategory = collection.Where(x => x.Category.ToLower() == category.ToLower());
+
+      return await QueryAsync(productsByCategory, filter);
    }
 }

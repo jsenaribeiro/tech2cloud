@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Ambev.DeveloperEvaluation.Domain.Validation;
 
-public class NameValidator : AbstractValidator<Name?>
+public class NameValidator : AbstractValidator<Name>
 {
     public NameValidator()
     {

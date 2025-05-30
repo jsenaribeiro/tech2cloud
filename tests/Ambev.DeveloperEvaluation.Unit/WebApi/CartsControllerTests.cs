@@ -17,13 +17,11 @@ using Ambev.DeveloperEvaluation.Application.Carts.CreateCart;
 
 namespace Ambev.DeveloperEvaluation.Unit.WebApi;
 
-public class CartsControllerTests
+public class CartsControllerTests : AbstractTests
 {
-   private readonly IMediator _mediator = Substitute.For<IMediator>();
-   private readonly IMapper _mapper = Substitute.For<IMapper>();
    private readonly CartsController _controller;
 
-   public CartsControllerTests() => _controller = new CartsController(_mediator, _mapper);
+   public CartsControllerTests() => _controller = new CartsController(provider);
 
    [Fact(Skip = "Should a valid request get a cart with success")]
    public async Task GetCart_ReturnsOk_WhenCartExists()

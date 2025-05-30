@@ -7,7 +7,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 /// <summary>
 /// Implementation of IUserRepository using Entity Framework Core
 /// </summary>
-public class UserRepository : BaseRepository<User, int>, IUserRepository
+public class UserRepository : Repository<User, int>, IUserRepository
 {
     /// <summary>
     /// Initializes a new instance of UserRepository
@@ -22,5 +22,5 @@ public class UserRepository : BaseRepository<User, int>, IUserRepository
    /// <param name="cancellationToken">Cancellation token</param>
    /// <returns>The user if found, null otherwise</returns>
    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default) =>
-      await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+      await collection.FirstOrDefaultAsync(u => u.Email == email, cancellationToken); 
 }

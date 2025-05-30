@@ -19,7 +19,7 @@ public class UpdateUserProfile : Profile
             .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()));
             
       CreateMap<UpdateUserRequest, UpdateUserCommand>()
-         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<UserStatus>(src.Status)))
-         .ForMember(dest => dest.Role, opt => opt.MapFrom(src => Enum.Parse<UserRole>(src.Role)));
+         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.For<UserStatus>()))
+         .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.For<UserRole>()));
    }
 }

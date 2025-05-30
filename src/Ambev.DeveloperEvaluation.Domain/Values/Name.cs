@@ -2,6 +2,14 @@ namespace Ambev.DeveloperEvaluation.Domain.Values;
 
 public class Name
 {
+   public Name() { }
+
+   public Name(string firstName, string lastName)
+   {
+      FirstName = firstName;
+      LastName = lastName;
+   }
+
    /// <summary>
    /// First name.
    /// </summary>

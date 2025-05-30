@@ -8,8 +8,6 @@ Ambev DeveloperEvaluation is a tech2cloud challenge project to evaluate design a
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-
-
 ## Features
 
 - User authentication

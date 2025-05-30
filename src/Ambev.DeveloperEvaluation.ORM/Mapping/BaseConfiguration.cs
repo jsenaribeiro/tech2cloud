@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Ambev.DeveloperEvaluation.ORM.Mapping;
 
 public abstract class BaseConfiguration<E, I> : IEntityTypeConfiguration<E>
-    where E : BaseEntity<I>
+    where E : Entity<I>
     where I : struct, IComparable
 {
    public virtual void Configure(EntityTypeBuilder<E> builder)

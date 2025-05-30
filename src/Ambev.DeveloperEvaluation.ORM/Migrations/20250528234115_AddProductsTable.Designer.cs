@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
-    [DbContext(typeof(DefaultContext))]
+    [DbContext(typeof(PostgreContext))]
     [Migration("20250528234115_AddProductsTable")]
     partial class AddProductsTable
     {

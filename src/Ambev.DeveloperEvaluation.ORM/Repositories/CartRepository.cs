@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 /// <summary>
 /// Implementation of ICartRepository using Entity Framework Core
 /// </summary>
-public class CartRepository : BaseRepository<Cart, int>, ICartRepository
+public class CartRepository : Repository<Cart, int>, ICartRepository
 {
    /// <summary>
    /// Initializes a new instance of CartRepository

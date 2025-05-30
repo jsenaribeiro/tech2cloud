@@ -5,6 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Microsoft.Extensions.DependencyInjection;
+using Ambev.DeveloperEvaluation.Domain;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 
@@ -13,16 +14,16 @@ namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 /// </summary>
 public class CreateProductHandler : IRequestHandler<CreateProductCommand, CreateProductResult>
 {
-   private readonly IProductRepository _productRepository;
+   private readonly IUnitOfWork _unitOfWork;
    private readonly IMapper _mapper;
 
    /// <summary>
    /// Initializes a new instance of CreateProductHandler
    /// </summary>
-   /// <param name="provider">The service locator for dependencies</param>
+   /// <param name="provider">Service locator for DI</param>
    public CreateProductHandler(IServiceProvider provider)
    {
-      _productRepository = provider.GetRequiredService<IProductRepository>();
+      _unitOfWork = provider.GetRequiredService<IUnitOfWork>();
       _mapper = provider.GetRequiredService<IMapper>();
    }
 
@@ -41,7 +42,7 @@ public class CreateProductHandler : IRequestHandler<CreateProductCommand, Create
          throw new ValidationException(validationResult.Errors);
 
       var product = _mapper.Map<Product>(command);
-      var createdProduct = await _productRepository.CreateAsync(product, cancellationToken);
+      var createdProduct = await _unitOfWork.Products.CreateAsync(product, cancellationToken);
       var result = _mapper.Map<CreateProductResult>(createdProduct);
 
       return result;

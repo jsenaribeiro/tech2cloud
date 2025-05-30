@@ -15,11 +15,13 @@ public class CreateUserProfile : Profile
    public CreateUserProfile()
    {
       CreateMap<CreateUserRequest, CreateUserCommand>()
-         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<UserStatus>(src.Status)))
-         .ForMember(dest => dest.Role, opt => opt.MapFrom(src => Enum.Parse<UserRole>(src.Role)));
+         .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.For<UserStatus>()))
+         .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.For<UserRole>()));
 
       CreateMap<CreateUserResult, CreateUserResponse>()
          .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
          .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role.ToString()));
    }
 }
+
+
