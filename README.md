@@ -84,7 +84,6 @@ cd src
 dotnet test
 ```
 
-
 ## Structure
 
 The project is structured as follows:
@@ -104,6 +103,8 @@ root
       ├── Ambev.DeveloperEvaluation.Integration/
       └── Ambev.DeveloperEvaluation.Unit/
 ```
+
+
 
 ## References
 
