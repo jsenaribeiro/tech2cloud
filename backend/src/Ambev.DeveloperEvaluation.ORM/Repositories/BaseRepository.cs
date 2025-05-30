@@ -111,27 +111,6 @@ public abstract class BaseRepository<E, I> : IRepository<E, I>
       dbSet.Update(entity);
       await context.SaveChangesAsync(cancellationToken);
       return entity;
-
-      // var dbEntity = await GetByIdAsync(entity.Id, cancellationToken);
-      // if (dbEntity is null) throw new InvalidOperationException(typeof(E).Name + " not found");
-
-      // foreach (var prop in typeof(E).GetProperties())
-      // {
-      //    if (!prop.CanWrite) continue;
-      //    if (prop.Name is nameof(BaseEntity<I>.Id)) continue;
-      //    if (prop.Name is nameof(BaseEntity<I>.CreatedAt)) continue;
-      //    if (prop.Name is nameof(BaseEntity<I>.UpdatedAt)) continue;
-
-      //    var newValue = prop.GetValue(entity);
-
-      //    if (!Equals(prop.GetValue(dbEntity), newValue))
-      //       prop.SetValue(dbEntity, newValue);
-      // }
-
-      // dbEntity.UpdatedAt = DateTime.UtcNow;
-
-      // await context.SaveChangesAsync(cancellationToken);
-      // return dbEntity;
    }
 
    /// <summary>
