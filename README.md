@@ -8,15 +8,28 @@ Ambev DeveloperEvaluation is a tech2cloud challenge project to evaluate design a
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+
+
+## Features
+
+- User authentication
+- User, cart, and product management
+- RESTful API documented with Swagger
+- Unit, integration, and functional tests
+
+
 ### Prerequisites
 
 Before you begin, ensure you have the following installed:
 
-* **[.NET SDK](https://dotnet.microsoft.com/download)**: This project requires .NET 8.0). You can download it from the official .NET website.
-* **[Visual Studio Code](https://code.visualstudio.com/)** or **[Visual Studio](https://visualstudio.microsoft.com/vs/)** (Recommended IDEs for C# development).
-* **[Git](https://git-scm.com/downloads)**: For cloning the repository.
+* **[.NET SDK](https://dotnet.microsoft.com/download)**: .NET 8.0 or higher.
+* **[Git](https://git-scm.com/downloads)**: for cloning the repository.
+* **[Docker](https://docs.docker.com/get-started/get-docker/)**: for running the databases.
+* **[Visual Code](https://code.visualstudio.com/)** or **[Visual Studio](https://visualstudio.microsoft.com/vs/)** for C# development (recomended).
 
 ### Installation
+
+Follow these steps to download the project and its dependencies.
 
 1. **Clone the repository:**
    
@@ -26,40 +39,35 @@ Before you begin, ensure you have the following installed:
    ```
 
 2. **Restore NuGet packages:**
-   Navigate to the project root directory (where the `.sln` file is located) and run:
+   Go to to the `/src` project directory and run:
    
    ```bash
    dotnet restore
    ```
 
+## Configuration
+
+The environment configuration is located in path:  `src/Ambev.DeveloperEvaluation.WebApi/appsettings.json` .
 
 ### How to Run
 
-Follow these steps to run the project.
+Follow these steps to run the project in root directory.
 
 ### Running from the Command Line
 
-From the project root directory (where the `.sln` file is located):
-
-1. **Go to root folder:**
-   
-   ```bash
-   cd backend/src
-   ```
-
-2. **Run the databases:**
+1. **Up the databases:**
    
    ```bash
    docker compose --project-name tech2cloud up
    ```
 
-3. **Run the application:**
+2. **Run the application:**
    
    ```bash
-   dotnet run --project ./Ambev.DeveloperEvaluation.WebApi
+   dotnet run --project src/Ambev.DeveloperEvaluation.WebApi
    ```
    
-   This will typically start the application on `http://localhost:5119`. Check the console output for the exact URL. If The documentation is at`https://localhost:5119/swagger` 
+   It runs on `http://localhost:5119` with documentation on `https://localhost:5119/swagger` 
 
 ---
 
@@ -69,10 +77,10 @@ This section outlines how to run the project's tests.
 
 ### Running tests
 
-The test projects are located in the `backend/src/tests` directory. 
+The test projects are located in the `src/tests` directory. 
 
 ```bash
-cd backend/src
+cd src
 dotnet test
 ```
 
@@ -84,19 +92,21 @@ The project is structured as follows:
 ```
 root
   ├─ README.md
-  ├─ frontend/
-  └─ backend/
-       ├─ src/
-       |   ├── Ambev.DeveloperEvaluation.Common/
-       |   ├── Ambev.DeveloperEvaluation.Application/
-       |   ├── Ambev.DeveloperEvaluation.Domain/
-       |   ├── Ambev.DeveloperEvaluation.IoC/
-       |   ├── Ambev.DeveloperEvaluation.ORM/
-       |   └── Ambev.DeveloperEvaluation.WebApi/
-       └── tests/
-           ├── Ambev.DeveloperEvaluation.Functional/
-           ├── Ambev.DeveloperEvaluation.Integration/
-           └── Ambev.DeveloperEvaluation.Unit/
+  ├─ src/
+  │   ├── Ambev.DeveloperEvaluation.Common/
+  │   ├── Ambev.DeveloperEvaluation.Application/
+  │   ├── Ambev.DeveloperEvaluation.Domain/
+  │   ├── Ambev.DeveloperEvaluation.IoC/
+  │   ├── Ambev.DeveloperEvaluation.ORM/
+  │   └── Ambev.DeveloperEvaluation.WebApi/
+  └── tests/
+      ├── Ambev.DeveloperEvaluation.Functional/
+      ├── Ambev.DeveloperEvaluation.Integration/
+      └── Ambev.DeveloperEvaluation.Unit/
 ```
 
+## References
 
+- [.NET Documentation](https://learn.microsoft.com/en-us/dotnet/)
+- [Docker Documentation](https://docs.docker.com/)
+- [Swagger Documentation](https://swagger.io/docs/)
